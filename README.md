@@ -82,6 +82,40 @@ The built files will be in the `dist` directory.
 
 > **Note**: Production builds use `.env.production` file (or environment variables if deployed), while local development uses `.env.local` file.
 
+## Publishing to Docker Hub
+
+1. **Log in to Docker Hub:**
+
+        docker login
+
+2. **Build, tag and push with your Docker Hub username:**
+
+        # Use BuildKit for multi-arch builds
+        docker buildx create --use
+
+        docker buildx build \
+          --platform linux/amd64,linux/arm64 \
+          -t mauricewipf/ai-chat-translator:latest \
+          -t mauricewipf/ai-chat-translator:0.1.0 \
+          --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
+          --build-arg APP_VERSION=0.1.0 \
+          --push \
+          --provenance=false \
+          .
+
+3. Others can then pull and use your image:
+
+    docker pull mauricewipf/ai-chat-translator:latest
+
+
+4. How to use the image
+
+    docker run \
+      --publish 3000:80 \
+      --restart unless-stopped \
+      --env OPENAI_API_KEY=YOUR_SECRET_KEY_BASE \
+      mauricewipf/ai-chat-translator:latest
+
 ## Usage
 
 1. **Select a language pair** by clicking on one of the language pair buttons at the bottom
@@ -93,37 +127,6 @@ The built files will be in the `dist` directory.
 
 - **Words or phrases**: Gets translated with an example sentence
 - **Full sentences**: Gets translated directly
-
-## Tech Stack
-
-- **Frontend**: React 18
-- **Build Tool**: Vite
-- **UI Components**: shadcn/ui
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **AI**: OpenAI API (GPT-4)
-- **Containerization**: Docker & Docker Compose
-
-## Project Structure
-
-```
-ai-chat-translator/
-├── src/
-│   ├── components/
-│   │   ├── ui/              # shadcn/ui components
-│   │   ├── ChatInterface.jsx
-│   │   └── LanguagePairSelector.jsx
-│   ├── lib/
-│   │   └── utils.js         # Utility functions
-│   ├── App.jsx              # Main application component
-│   ├── main.jsx             # Entry point
-│   └── index.css            # Global styles
-├── Dockerfile
-├── docker-compose.yml
-├── Umbrel-app.yml
-├── nginx.conf
-└── package.json
-```
 
 ## Configuration
 
@@ -147,24 +150,6 @@ The application uses a single environment variable for all environments:
 - `.env` - Used by Docker Compose to pass environment variables during build
 
 Make sure to copy `.env.example` to `.env.local` for local development and set your actual API key.
-
-## Development
-
-### Adding New Language Pairs
-
-Edit `src/components/LanguagePairSelector.jsx` and add new pairs to the `languagePairs` array:
-
-```javascript
-{
-  id: 'de-fr',
-  source: { code: 'de', name: 'German', flag: '🇩🇪' },
-  target: { code: 'fr', name: 'French', flag: '🇫🇷' }
-}
-```
-
-### Customizing the Translation Agent
-
-Modify the `getSystemPrompt()` function in `src/App.jsx` to change the translation behavior.
 
 ## License
 
