@@ -8,6 +8,8 @@ An AI-powered chat application for language translation built with React, shadcn
 - 🔄 Bidirectional translation (click on selected pair to reverse direction)
 - 💬 Chat-based interface for natural conversation
 - 🎨 Modern UI with shadcn/ui components
+- 📱 Progressive Web App (PWA) - Install and use offline
+- 🔔 Auto-update notifications for new content
 - 🐳 Docker support for easy deployment
 
 ## Language Pairs
@@ -96,9 +98,9 @@ The built files will be in the `dist` directory.
         docker buildx build \
           --platform linux/amd64,linux/arm64 \
           -t mauricewipf/ai-chat-translator:latest \
-          -t mauricewipf/ai-chat-translator:0.1.0 \
+          -t mauricewipf/ai-chat-translator:0.1.1 \
           --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
-          --build-arg APP_VERSION=0.1.0 \
+          --build-arg APP_VERSION=0.1.1 \
           --push \
           --provenance=false \
           .
@@ -127,6 +129,16 @@ The built files will be in the `dist` directory.
 
 - **Words or phrases**: Gets translated with an example sentence
 - **Full sentences**: Gets translated directly
+
+### PWA Features
+
+The app is a Progressive Web App with the following capabilities:
+- **Installable**: Install on desktop or mobile devices for quick access
+- **Offline Support**: Core app functionality works without internet
+- **Auto-updates**: Automatically updates when new versions are available
+- **App-like Experience**: Runs in standalone mode without browser UI
+
+For detailed PWA documentation, see [PWA_FEATURES.md](./PWA_FEATURES.md)
 
 ## Configuration
 
