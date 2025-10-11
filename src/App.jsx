@@ -1,17 +1,14 @@
 import { ChatInterface } from '@/components/ChatInterface'
 import { LanguagePairSelector } from '@/components/LanguagePairSelector'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import OpenAI from 'openai'
 import { useState } from 'react'
 
-const OPENAI_API_KEY = import.meta.env.OPENAI_API_KEY
-
-const openai = OPENAI_API_KEY ? new OpenAI({
-    apiKey: OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true
-}) : null
-
 function App() {
+    const [apiKey, setApiKey] = useState(import.meta.env.OPENAI_API_KEY || '')
+    const [apiKeyInput, setApiKeyInput] = useState('')
     const [selectedPair, setSelectedPair] = useState({
         id: 'de-en',
         source: { code: 'de', name: 'German', flag: '🇩🇪' },
@@ -37,6 +34,13 @@ function App() {
         }
     }
 
+    const handleApiKeySubmit = (e) => {
+        e.preventDefault()
+        if (apiKeyInput.trim()) {
+            setApiKey(apiKeyInput.trim())
+        }
+    }
+
     const getSystemPrompt = () => {
         const sourceLang = selectedPair.reversed ? selectedPair.target.name : selectedPair.source.name
         const targetLang = selectedPair.reversed ? selectedPair.source.name : selectedPair.target.name
@@ -45,13 +49,18 @@ function App() {
     }
 
     const handleSendMessage = async (userMessage) => {
-        if (!openai) {
+        if (!apiKey) {
             setMessages([...messages,
             { role: 'user', content: userMessage },
             { role: 'assistant', content: 'Error: OpenAI API key not configured. Please set OPENAI_API_KEY in your .env file.' }
             ])
             return
         }
+
+        const openai = new OpenAI({
+            apiKey: apiKey,
+            dangerouslyAllowBrowser: true
+        })
 
         const newMessages = [...messages, { role: 'user', content: userMessage }]
         setMessages(newMessages)
@@ -77,6 +86,42 @@ function App() {
         } finally {
             setIsLoading(false)
         }
+    }
+
+    // If no API key is set, show the API key input form
+    if (!apiKey) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center p-4">
+                <Card className="w-full max-w-md p-6">
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <h2 className="text-2xl font-bold text-center">AI Chat Translator</h2>
+                            <p className="text-sm text-muted-foreground text-center">
+                                Please enter your OpenAI API key to get started
+                            </p>
+                        </div>
+                        <form onSubmit={handleApiKeySubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Input
+                                    type="password"
+                                    placeholder="sk-..."
+                                    value={apiKeyInput}
+                                    onChange={(e) => setApiKeyInput(e.target.value)}
+                                    className="w-full"
+                                    autoFocus
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    Your API key is stored locally and never sent to any server except OpenAI
+                                </p>
+                            </div>
+                            <Button type="submit" className="w-full" disabled={!apiKeyInput.trim()}>
+                                Continue
+                            </Button>
+                        </form>
+                    </div>
+                </Card>
+            </div>
+        )
     }
 
     return (
