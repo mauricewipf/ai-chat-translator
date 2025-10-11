@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  ai-chat-translator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-chat-translator
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_OPENAI_API_KEY=${OPENAI_API_KEY}
+    restart: unless-stopped
+    networks:
+      - translator-network
+
+networks:
+  translator-network:
+    driver: bridge
