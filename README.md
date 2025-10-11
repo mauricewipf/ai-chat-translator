@@ -32,9 +32,14 @@ An AI-powered chat application for language translation built with React, shadcn
    ```
 
 2. **Configure environment variables:**
-   Create a `.env` file in the root directory:
+   Copy the example environment file and add your OpenAI API key:
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Then edit `.env.local`:
    ```env
-   VITE_OPENAI_API_KEY=your_openai_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
    ```
 
 3. **Start the development server:**
@@ -47,15 +52,15 @@ An AI-powered chat application for language translation built with React, shadcn
 
 ### Docker Deployment
 
-1. **Build and run with Docker Compose:**
-   ```bash
-   docker-compose up -d
-   ```
-
-2. **Set your OpenAI API key:**
-   Create a `.env` file with:
+1. **Set your OpenAI API key:**
+   Create a `.env` file in the root directory (not `.env.local`):
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+2. **Build and run with Docker Compose:**
+   ```bash
+   docker-compose up -d
    ```
 
 3. **Access the application:**
@@ -63,11 +68,19 @@ An AI-powered chat application for language translation built with React, shadcn
 
 ### Building for Production
 
+**For production build:**
 ```bash
 npm run build
 ```
 
+**For local development build:**
+```bash
+npm run build:local
+```
+
 The built files will be in the `dist` directory.
+
+> **Note**: Production builds use `.env.production` file (or environment variables if deployed), while local development uses `.env.local` file.
 
 ## Usage
 
@@ -123,8 +136,17 @@ The application uses OpenAI's GPT-4 model for translations. Make sure you have:
 
 ### Environment Variables
 
-- `VITE_OPENAI_API_KEY`: Your OpenAI API key (for local development)
-- `OPENAI_API_KEY`: Your OpenAI API key (for Docker deployment)
+The application uses a single environment variable for all environments:
+
+- `OPENAI_API_KEY`: Your OpenAI API key
+
+**Environment Files:**
+- `.env.local` - Used for local development (not committed to git)
+- `.env.production` - Used for production builds (not committed to git)
+- `.env.example` - Example template (committed to git)
+- `.env` - Used by Docker Compose to pass environment variables during build
+
+Make sure to copy `.env.example` to `.env.local` for local development and set your actual API key.
 
 ## Development
 

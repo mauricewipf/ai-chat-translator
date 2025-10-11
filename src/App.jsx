@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import OpenAI from 'openai'
 import { useState } from 'react'
 
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY
+const OPENAI_API_KEY = import.meta.env.OPENAI_API_KEY
 
 const openai = OPENAI_API_KEY ? new OpenAI({
     apiKey: OPENAI_API_KEY,
@@ -48,7 +48,7 @@ function App() {
         if (!openai) {
             setMessages([...messages,
             { role: 'user', content: userMessage },
-            { role: 'assistant', content: 'Error: OpenAI API key not configured. Please set VITE_OPENAI_API_KEY in your .env file.' }
+            { role: 'assistant', content: 'Error: OpenAI API key not configured. Please set OPENAI_API_KEY in your .env file.' }
             ])
             return
         }

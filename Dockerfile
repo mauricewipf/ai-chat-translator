@@ -12,7 +12,11 @@ RUN npm ci
 # Copy source files
 COPY . .
 
-# Build the application
+# Accept build argument for API key
+ARG OPENAI_API_KEY
+ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+
+# Build the application with production environment
 RUN npm run build
 
 # Production stage
