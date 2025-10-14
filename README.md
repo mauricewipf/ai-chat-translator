@@ -4,19 +4,12 @@ An AI-powered chat application for language translation built with React, shadcn
 
 ## Features
 
-- 🌍 Multiple language pairs: German/English, German/Spanish, German/Hungarian
+- 🌍 Translate word and sentences. Get exmaples on how to use a word
 - 🔄 Bidirectional translation (click on selected pair to reverse direction)
 - 💬 Chat-based interface for natural conversation
 - 🎨 Modern UI with shadcn/ui components
-- 📱 Progressive Web App (PWA) - Install and use offline
-- 🔔 Auto-update notifications for new content
+- 📱 Progressive Web App (PWA)
 - 🐳 Docker support for easy deployment
-
-## Language Pairs
-
-- 🇩🇪 German ↔ 🇬🇧 English
-- 🇩🇪 German ↔ 🇪🇸 Spanish
-- 🇩🇪 German ↔ 🇭🇺 Hungarian
 
 ## Prerequisites
 
@@ -25,6 +18,13 @@ An AI-powered chat application for language translation built with React, shadcn
 - Docker and Docker Compose (for containerized deployment)
 
 ## Setup
+
+There are two ways to use your **OPENAI_API_KEY**:
+
+- Use a .env file or
+- Enter the key in the browser (stored on local storage)
+
+![AI Chat Translator UI](assets/ui-desktop-01.png)
 
 ### Local Development
 
@@ -36,10 +36,10 @@ An AI-powered chat application for language translation built with React, shadcn
 2. **Configure environment variables:**
    Copy the example environment file and add your OpenAI API key:
    ```bash
-   cp .env.example .env.local
+   cp .env.example .env
    ```
    
-   Then edit `.env.local`:
+   Then edit `.env`:
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
    ```
@@ -50,22 +50,6 @@ An AI-powered chat application for language translation built with React, shadcn
    ```
 
 4. **Access the application:**
-   Open your browser and navigate to `http://localhost:3000`
-
-### Docker Deployment
-
-1. **Set your OpenAI API key:**
-   Create a `.env` file in the root directory (not `.env.local`):
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-2. **Build and run with Docker Compose:**
-   ```bash
-   docker-compose up -d
-   ```
-
-3. **Access the application:**
    Open your browser and navigate to `http://localhost:3000`
 
 ### Building for Production
@@ -81,8 +65,6 @@ npm run build:local
 ```
 
 The built files will be in the `dist` directory.
-
-> **Note**: Production builds use `.env.production` file (or environment variables if deployed), while local development uses `.env.local` file.
 
 ## Publishing to Docker Hub
 
@@ -119,46 +101,21 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
             --env OPENAI_API_KEY=YOUR_SECRET_KEY_BASE \
             mauricewipf/ai-chat-translator:latest
 
-## Usage
+## Docker Deployment
 
-1. **Select a language pair** by clicking on one of the language pair buttons at the bottom
-2. **Toggle translation direction** by clicking on the already selected pair
-3. **Type your message** in the input field
-4. **Press Send** or hit Enter to get the translation
+1. **Set your OpenAI API key:**
+   Create a `.env` file in the root directory:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
 
-### Translation Behavior
+2. **Build and run with Docker Compose:**
+   ```bash
+   docker-compose up -d --build
+   ```
 
-- **Words or phrases**: Gets translated with an example sentence
-- **Full sentences**: Gets translated directly
-
-### PWA Features
-
-The app is a Progressive Web App with the following capabilities:
-- **Installable**: Install on desktop or mobile devices for quick access
-- **Auto-updates**: Automatically updates when new versions are available
-
-## Configuration
-
-### OpenAI API
-
-The application uses OpenAI's GPT-4 model for translations. Make sure you have:
-- A valid OpenAI API key
-- Sufficient API credits
-- Access to GPT-4 (or modify the model in `src/App.jsx`)
-
-### Environment Variables
-
-The application uses a single environment variable for all environments:
-
-- `OPENAI_API_KEY`: Your OpenAI API key
-
-**Environment Files:**
-- `.env.local` - Used for local development (not committed to git)
-- `.env.production` - Used for production builds (not committed to git)
-- `.env.example` - Example template (committed to git)
-- `.env` - Used by Docker Compose to pass environment variables during build
-
-Make sure to copy `.env.example` to `.env.local` for local development and set your actual API key.
+3. **Access the application:**
+   Open your browser and navigate to `http://localhost:3000`
 
 ## License
 
