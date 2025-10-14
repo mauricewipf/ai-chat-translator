@@ -9,7 +9,7 @@ export function LanaguageEditSheet({ children, pairs, onRemovePair, onAddPair, l
             <SheetTrigger asChild>
                 {children}
             </SheetTrigger>
-            <SheetContent side="right" className="w-full sm:max-w-md">
+            <SheetContent side="right" className="w-full sm:max-w-xl">
                 <SheetHeader>
                     <SheetTitle>Edit language pairs</SheetTitle>
                 </SheetHeader>
@@ -26,7 +26,7 @@ export function LanaguageEditSheet({ children, pairs, onRemovePair, onAddPair, l
                                 <span className="text-xl" role="img" aria-label={pair.target.name}>{pair.target.flag}</span>
                                 <span className="text-sm">{pair.target.name}</span>
                             </div>
-                            <Button variant="destructive" size="sm" onClick={() => onRemovePair?.(pair.id)}>Remove</Button>
+                            <Button variant="destructiveOutline" size="sm" onClick={() => onRemovePair?.(pair.id)}>Remove</Button>
                         </div>
                     ))}
                 </div>
