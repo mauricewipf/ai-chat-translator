@@ -13,14 +13,15 @@ export function LanguagePairSelector({ selectedPair, onPairSelect }) {
                     const isReversed = selectedPair?.id === pair.id && selectedPair?.reversed
 
                     return (
-                        <button
+                        <Button
+                            variant="outline"
                             key={pair.id}
                             onClick={() => onPairSelect(pair)}
                             className={cn(
-                                "flex items-center gap-1 px-2 py-1 rounded-lg border-2 transition-all hover:shadow-md",
+                                "gap-1 px-2 py-1 transition-all hover:shadow-md",
                                 isSelected
-                                    ? "border-primary bg-primary/10 shadow-sm"
-                                    : "border-border bg-background hover:border-primary/50"
+                                    ? "border-primary bg-primary/10 border-2 shadow-sm"
+                                    : ""
                             )}
                         >
                             <span className="text-2xl" role="img" aria-label={pair.source.name}>
@@ -36,7 +37,7 @@ export function LanguagePairSelector({ selectedPair, onPairSelect }) {
                             <span className="text-2xl" role="img" aria-label={pair.target.name}>
                                 {pair.target.flag}
                             </span>
-                        </button>
+                        </Button>
                     )
                 })}
                 <LanguagePairPopup>
