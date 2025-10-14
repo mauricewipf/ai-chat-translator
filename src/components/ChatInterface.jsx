@@ -1,5 +1,5 @@
+import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { Loader2, Send } from 'lucide-react'
@@ -75,9 +75,9 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
             )}
 
             {/* Input Area */}
-            <div className="border-t p-4">
+            <div className="p-4">
                 <form onSubmit={handleSubmit} className="flex gap-2">
-                    <Input
+                    <AutoResizeTextarea
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Type your text..."
