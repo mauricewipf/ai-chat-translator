@@ -1,43 +1,13 @@
+import { LanguagePairPopup } from '@/components/LanguagePairPopup'
+import { Button } from '@/components/ui/button'
+import { languagePairs } from '@/data/languagePairs'
 import { cn } from '@/lib/utils'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
-
-const languagePairs = [
-    {
-        id: 'de-en',
-        source: { code: 'de', name: 'German', flag: '🇩🇪' },
-        target: { code: 'en', name: 'English', flag: '🇬🇧' }
-    },
-    {
-        id: 'de-es',
-        source: { code: 'de', name: 'German', flag: '🇩🇪' },
-        target: { code: 'es', name: 'Spanish', flag: '🇪🇸' }
-    },
-    {
-        id: 'de-hu',
-        source: { code: 'de', name: 'German', flag: '🇩🇪' },
-        target: { code: 'hu', name: 'Hungarian', flag: '🇭🇺' }
-    },
-    {
-        id: 'de-uk',
-        source: { code: 'de', name: 'German', flag: '🇩🇪' },
-        target: { code: 'uk', name: 'Ukrainian', flag: '🇺🇦' }
-    },
-    {
-        id: 'en-es',
-        source: { code: 'en', name: 'English', flag: '🇬🇧' },
-        target: { code: 'es', name: 'Spanish', flag: '🇪🇸' }
-    },
-    {
-        id: 'en-hu',
-        source: { code: 'en', name: 'English', flag: '🇬🇧' },
-        target: { code: 'hu', name: 'Hungarian', flag: '🇭🇺' }
-    }
-]
+import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react'
 
 export function LanguagePairSelector({ selectedPair, onPairSelect }) {
     return (
         <div className="w-full overflow-x-auto">
-            <div className="flex gap-3 min-w-max px-2">
+            <div className="flex gap-3 min-w-max px-2 items-center">
                 {languagePairs.map((pair) => {
                     const isSelected = selectedPair?.id === pair.id
                     const isReversed = selectedPair?.id === pair.id && selectedPair?.reversed
@@ -69,6 +39,12 @@ export function LanguagePairSelector({ selectedPair, onPairSelect }) {
                         </button>
                     )
                 })}
+                <LanguagePairPopup>
+                    <Button variant="outline">
+                        <Pencil className="w-4 h-4" />
+                        Edit
+                    </Button>
+                </LanguagePairPopup>
             </div>
         </div>
     )
