@@ -7,7 +7,10 @@ import OpenAI from 'openai'
 import { useState } from 'react'
 
 function App() {
-    const [apiKey, setApiKey] = useState(import.meta.env.OPENAI_API_KEY || '')
+    const [apiKey, setApiKey] = useState(() => {
+        const storedKey = sessionStorage.getItem('openai_api_key')
+        return storedKey || import.meta.env.OPENAI_API_KEY || ''
+    })
     const [apiKeyInput, setApiKeyInput] = useState('')
     const [selectedPair, setSelectedPair] = useState({
         id: 'de-en',
@@ -37,7 +40,9 @@ function App() {
     const handleApiKeySubmit = (e) => {
         e.preventDefault()
         if (apiKeyInput.trim()) {
-            setApiKey(apiKeyInput.trim())
+            const key = apiKeyInput.trim()
+            setApiKey(key)
+            sessionStorage.setItem('openai_api_key', key)
         }
     }
 
