@@ -28,8 +28,11 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
             {/* Messages Area */}
             <ScrollArea ref={scrollRef} className="flex-1 p-4 space-y-4">
                 {messages.length === 0 ? (
-                    <div className="h-full flex items-center justify-center text-muted-foreground">
-                        <p>Translate a word, text or sentence by typing below...</p>
+                    <div className="h-full flex items-center justify-center text-center text-muted-foreground">
+                        <p>Translate a word, text or sentence by typing below.<br /><br />
+                            Click a language pair to start translating.<br /><br />
+                            Click it again to toggle the direction.
+                        </p>
                     </div>
                 ) : (
                     <div className="space-y-4">
@@ -77,7 +80,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
                     <Input
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="Type your message..."
+                        placeholder="Type your text..."
                         disabled={isLoading}
                         className="flex-1"
                     />
