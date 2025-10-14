@@ -87,9 +87,10 @@ export function useLanguagePairs(languages) {
         if (!src || !tgt) return
         if (!languages[src] || !languages[tgt]) return
         const id = `${src}-${tgt}`
+        const reversedId = `${tgt}-${src}`
         setPairIds((prev) => {
-            if (prev.includes(id)) return prev
-            const next = [...prev, id]
+            if (prev.includes(id) || prev.includes(reversedId)) return prev
+            const next = [id, ...prev]
             try { localStorage.setItem(PAIRS_KEY, JSON.stringify(next)) } catch (_) { }
             return next
         })

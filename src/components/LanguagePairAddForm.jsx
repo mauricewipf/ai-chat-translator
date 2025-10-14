@@ -13,7 +13,8 @@ export function LanguagePairAddForm({ languages, pairs, onAddPair }) {
     const [tgtCode, setTgtCode] = useState(defaultTgt)
 
     const pendingPairId = `${srcCode || ''}-${tgtCode || ''}`
-    const isDuplicate = !!pairs?.some((p) => p.id === pendingPairId)
+    const reversedPendingPairId = `${tgtCode || ''}-${srcCode || ''}`
+    const isDuplicate = !!pairs?.some((p) => p.id === pendingPairId || p.id === reversedPendingPairId)
     const isInvalid = !srcCode || !tgtCode || srcCode === tgtCode
 
     return (
@@ -57,7 +58,6 @@ export function LanguagePairAddForm({ languages, pairs, onAddPair }) {
             </div>
             <div className="flex gap-3 text-xs text-muted-foreground">
                 {isInvalid && <span>Select different source and target</span>}
-                {!isInvalid && isDuplicate && <span>Pair already exists</span>}
             </div>
         </div>
     )
