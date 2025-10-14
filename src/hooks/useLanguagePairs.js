@@ -81,7 +81,21 @@ export function useLanguagePairs(languages) {
         })
     }
 
-    return { pairs, selectedPair, onPairSelect, onRemovePair }
+    const onAddPair = (sourceCode, targetCode) => {
+        const src = String(sourceCode || '').trim()
+        const tgt = String(targetCode || '').trim()
+        if (!src || !tgt) return
+        if (!languages[src] || !languages[tgt]) return
+        const id = `${src}-${tgt}`
+        setPairIds((prev) => {
+            if (prev.includes(id)) return prev
+            const next = [...prev, id]
+            try { localStorage.setItem(PAIRS_KEY, JSON.stringify(next)) } catch (_) { }
+            return next
+        })
+    }
+
+    return { pairs, selectedPair, onPairSelect, onRemovePair, onAddPair }
 }
 
 

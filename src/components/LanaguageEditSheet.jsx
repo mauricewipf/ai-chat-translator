@@ -1,8 +1,9 @@
+import { LanguagePairAddForm } from '@/components/LanguagePairAddForm'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { ArrowLeftRight } from 'lucide-react'
 
-export function LanaguageEditSheet({ children, pairs, onRemovePair }) {
+export function LanaguageEditSheet({ children, pairs, onRemovePair, onAddPair, languages }) {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -14,6 +15,8 @@ export function LanaguageEditSheet({ children, pairs, onRemovePair }) {
                 </SheetHeader>
 
                 <div className="mt-4 space-y-2">
+                    <LanguagePairAddForm languages={languages} pairs={pairs} onAddPair={onAddPair} />
+
                     {pairs?.map((pair) => (
                         <div key={pair.id} className="flex items-center justify-between rounded-md border p-3">
                             <div className="flex items-center gap-3">

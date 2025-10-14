@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react'
 
-export function LanguagePairSelector({ selectedPair, onPairSelect, pairs, onRemovePair }) {
+export function LanguagePairSelector({ selectedPair, onPairSelect, pairs, onRemovePair, onAddPair, languages }) {
     return (
         <div className="w-full overflow-x-auto">
             <div className="flex gap-3 min-w-max px-2 items-center">
@@ -39,7 +39,7 @@ export function LanguagePairSelector({ selectedPair, onPairSelect, pairs, onRemo
                         </Button>
                     )
                 })}
-                <LanaguageEditSheet pairs={pairs} onRemovePair={onRemovePair}>
+                <LanaguageEditSheet pairs={pairs} onRemovePair={onRemovePair} onAddPair={onAddPair} languages={languages}>
                     <Button variant="outline">
                         <Pencil className="w-4 h-4" />
                         Edit

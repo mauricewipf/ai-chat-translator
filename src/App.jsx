@@ -2,14 +2,14 @@ import { ApiKeyForm } from '@/components/ApiKeyForm'
 import { ChatInterface } from '@/components/ChatInterface'
 import { LanguagePairSelector } from '@/components/LanguagePairSelector'
 import { Card } from '@/components/ui/card'
-import { languages } from '@/data/languagePairs'
 import { useApiKey } from '@/hooks/useApiKey'
 import { useChat } from '@/hooks/useChat'
 import { useLanguagePairs } from '@/hooks/useLanguagePairs'
+import { languages } from '@/lib/languages'
 
 function App() {
     const { apiKey, saveApiKey } = useApiKey()
-    const { pairs, selectedPair, onPairSelect, onRemovePair } = useLanguagePairs(languages)
+    const { pairs, selectedPair, onPairSelect, onRemovePair, onAddPair } = useLanguagePairs(languages)
     const { messages, isLoading, sendMessage } = useChat(apiKey, selectedPair)
 
     if (!apiKey) {
@@ -30,6 +30,8 @@ function App() {
                                 onPairSelect={onPairSelect}
                                 pairs={pairs}
                                 onRemovePair={onRemovePair}
+                                onAddPair={onAddPair}
+                                languages={languages}
                             />
                         }
                     />
