@@ -4,7 +4,17 @@ import { ArrowLeftRight } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 export function LanguagePairAddForm({ languages, pairs, onAddPair }) {
-    const languageList = useMemo(() => Object.values(languages || {}), [languages])
+    const languageList = useMemo(() => {
+        const list = Object.values(languages || {})
+        const priorityOrder = ['de', 'en', 'uk']
+        const priorityIndex = new Map(priorityOrder.map((code, idx) => [code, idx]))
+        return list.sort((a, b) => {
+            const ai = priorityIndex.has(a.code) ? priorityIndex.get(a.code) : Infinity
+            const bi = priorityIndex.has(b.code) ? priorityIndex.get(b.code) : Infinity
+            if (ai !== bi) return ai - bi
+            return a.name.localeCompare(b.name)
+        })
+    }, [languages])
     const languageKeys = useMemo(() => Object.keys(languages || {}), [languages])
     const defaultSrc = useMemo(() => (languages?.en ? 'en' : (languageKeys[0] || '')), [languages, languageKeys])
     const defaultTgt = useMemo(() => (languages?.de ? 'de' : (languageKeys.find((k) => k !== defaultSrc) || languageKeys[0] || '')), [languages, languageKeys, defaultSrc])
