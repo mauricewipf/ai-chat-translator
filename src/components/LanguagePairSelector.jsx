@@ -1,4 +1,4 @@
-import { LanguagePairPopup } from '@/components/LanguagePairPopup'
+import { LanaguageEditSheet } from '@/components/LanaguageEditSheet'
 import { Button } from '@/components/ui/button'
 import { languagePairs } from '@/data/languagePairs'
 import { cn } from '@/lib/utils'
@@ -40,12 +40,12 @@ export function LanguagePairSelector({ selectedPair, onPairSelect }) {
                         </Button>
                     )
                 })}
-                <LanguagePairPopup>
+                <LanaguageEditSheet>
                     <Button variant="outline">
                         <Pencil className="w-4 h-4" />
                         Edit
                     </Button>
-                </LanguagePairPopup>
+                </LanaguageEditSheet>
             </div>
         </div>
     )

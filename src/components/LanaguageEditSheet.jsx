@@ -1,7 +1,7 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { languagePairs } from '@/data/languagePairs'
 
-export function LanguagePairPopup({ children }) {
+export function LanaguageEditSheet({ children }) {
     return (
         <Sheet>
             <SheetTrigger asChild>
