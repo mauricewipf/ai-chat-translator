@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 function App() {
     const [apiKey, setApiKey] = useState(() => {
-        const storedKey = sessionStorage.getItem('openai_api_key')
+        const storedKey = localStorage.getItem('openai_api_key')
         return storedKey || import.meta.env.OPENAI_API_KEY || ''
     })
     const [apiKeyInput, setApiKeyInput] = useState('')
@@ -42,7 +42,7 @@ function App() {
         if (apiKeyInput.trim()) {
             const key = apiKeyInput.trim()
             setApiKey(key)
-            sessionStorage.setItem('openai_api_key', key)
+            localStorage.setItem('openai_api_key', key)
         }
     }
 
