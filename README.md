@@ -2,6 +2,8 @@
 
 An AI-powered chat application for language translation built with React, shadcn/ui, and OpenAI API.
 
+> https://ai-chat-translator.vercel.app/
+
 ## Features
 
 - 🌍 Translate word and sentences. Get exmaples on how to use a word
@@ -116,6 +118,10 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
 
 3. **Access the application:**
    Open your browser and navigate to `http://localhost:3000`
+
+## Deploy on Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmauricewipf%2Fai-chat-translator&project-name=ai-chat-translator&repository-name=ai-chat-translator)
 
 ## License
 
