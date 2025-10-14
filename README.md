@@ -92,31 +92,32 @@ The built files will be in the `dist` directory.
 
 2. **Build, tag and push with your Docker Hub username:**
 
-        # Use BuildKit for multi-arch builds
-        docker buildx create --use
+         # Use BuildKit for multi-arch builds
+         docker buildx create --use
 
-        docker buildx build \
-          --platform linux/amd64,linux/arm64 \
-          -t mauricewipf/ai-chat-translator:latest \
-          -t mauricewipf/ai-chat-translator:0.1.1 \
-          --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
-          --build-arg APP_VERSION=0.1.1 \
-          --push \
-          --provenance=false \
-          .
+         docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mauricewipf/ai-chat-translator:latest \
+            -t mauricewipf/ai-chat-translator:0.1.1 \
+            --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
+            --build-arg APP_VERSION=0.1.1 \
+            --push \
+            --provenance=false \
+            .
 
 3. Others can then pull and use your image:
 
-    docker pull mauricewipf/ai-chat-translator:latest
+         docker pull mauricewipf/ai-chat-translator:latest
 
+View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat-translator
 
 4. How to use the image
 
-    docker run \
-      --publish 3000:80 \
-      --restart unless-stopped \
-      --env OPENAI_API_KEY=YOUR_SECRET_KEY_BASE \
-      mauricewipf/ai-chat-translator:latest
+         docker run \
+            --publish 3000:80 \
+            --restart unless-stopped \
+            --env OPENAI_API_KEY=YOUR_SECRET_KEY_BASE \
+            mauricewipf/ai-chat-translator:latest
 
 ## Usage
 
@@ -134,11 +135,7 @@ The built files will be in the `dist` directory.
 
 The app is a Progressive Web App with the following capabilities:
 - **Installable**: Install on desktop or mobile devices for quick access
-- **Offline Support**: Core app functionality works without internet
 - **Auto-updates**: Automatically updates when new versions are available
-- **App-like Experience**: Runs in standalone mode without browser UI
-
-For detailed PWA documentation, see [PWA_FEATURES.md](./PWA_FEATURES.md)
 
 ## Configuration
 
