@@ -29,7 +29,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
             <ScrollArea ref={scrollRef} className="flex-1 p-4 space-y-4">
                 {messages.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-muted-foreground">
-                        <p>Start a conversation by typing a message below...</p>
+                        <p>Translate a word, text or sentence by typing below...</p>
                     </div>
                 ) : (
                     <div className="space-y-4">
