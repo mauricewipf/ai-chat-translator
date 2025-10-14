@@ -3,8 +3,9 @@ import { LanguagePairSelector } from '@/components/LanguagePairSelector'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { languages } from '@/data/languagePairs'
 import OpenAI from 'openai'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 function App() {
     const [apiKey, setApiKey] = useState(() => {
@@ -12,13 +13,47 @@ function App() {
         return storedKey || import.meta.env.OPENAI_API_KEY || ''
     })
     const [apiKeyInput, setApiKeyInput] = useState('')
-    const [selectedPair, setSelectedPair] = useState({
-        id: 'de-en',
-        source: { code: 'de', name: 'German', flag: '🇩🇪' },
-        target: { code: 'en', name: 'English', flag: '🇬🇧' },
-        reversed: false
-    })
     const [messages, setMessages] = useState([])
+    // Persist only codes (pair ids) in localStorage
+    const [pairIds, setPairIds] = useState(() => {
+        try {
+            const stored = localStorage.getItem('language_pair_ids')
+            if (stored) return JSON.parse(stored)
+        } catch (_) { }
+        // default to some curated pairs if nothing stored
+        return ['de-en', 'de-es', 'en-es', 'en-hu']
+    })
+    // Derive full pair objects from ids using defaultPairs as the mapping source
+    const pairs = useMemo(() => {
+        return (pairIds || [])
+            .map((id) => {
+                const [src, tgt] = id.split('-')
+                const source = languages[src]
+                const target = languages[tgt]
+                if (!source || !target) return null
+                return { id, source, target }
+            })
+            .filter(Boolean)
+    }, [pairIds])
+    const [selectedPair, setSelectedPair] = useState(() => {
+        try {
+            const storedIds = localStorage.getItem('language_pair_ids')
+            const ids = storedIds ? JSON.parse(storedIds) : ['de-en', 'de-es', 'en-es', 'en-hu']
+            const storedId = localStorage.getItem('selected_language_pair_id')
+            const effectiveId = storedId && ids.includes(storedId) ? storedId : (ids[0] || null)
+            if (!effectiveId) return null
+            const [src, tgt] = effectiveId.split('-')
+            const source = languages[src]
+            const target = languages[tgt]
+            return source && target ? { id: effectiveId, source, target, reversed: false } : null
+        } catch (_) {
+            const fallbackId = 'de-en'
+            const [src, tgt] = fallbackId.split('-')
+            const source = languages[src]
+            const target = languages[tgt]
+            return source && target ? { id: fallbackId, source, target, reversed: false } : null
+        }
+    })
     const [isLoading, setIsLoading] = useState(false)
 
     const handlePairSelect = (pair) => {
@@ -35,6 +70,36 @@ function App() {
                 reversed: false
             })
         }
+        try { localStorage.setItem('selected_language_pair_id', pair.id) } catch (_) { }
+    }
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('language_pair_ids', JSON.stringify(pairIds))
+        } catch (_) { }
+    }, [pairIds])
+
+    const handleRemovePair = (id) => {
+        setPairIds((prev) => {
+            const next = prev.filter((pid) => pid !== id)
+            setSelectedPair((prevSel) => {
+                if (prevSel && prevSel.id === id) {
+                    const newId = next[0]
+                    if (!newId) return null
+                    const [src, tgt] = newId.split('-')
+                    const source = languages[src]
+                    const target = languages[tgt]
+                    const newSel = source && target ? { id: newId, source, target, reversed: false } : null
+                    if (newSel?.id) {
+                        try { localStorage.setItem('selected_language_pair_id', newSel.id) } catch (_) { }
+                    }
+                    return newSel
+                }
+                return prevSel
+            })
+            try { localStorage.setItem('language_pair_ids', JSON.stringify(next)) } catch (_) { }
+            return next
+        })
     }
 
     const handleApiKeySubmit = (e) => {
@@ -47,9 +112,10 @@ function App() {
     }
 
     const getSystemPrompt = () => {
-        const sourceLang = selectedPair.reversed ? selectedPair.target.name : selectedPair.source.name
-        const targetLang = selectedPair.reversed ? selectedPair.source.name : selectedPair.target.name
-
+        const active = selectedPair || (pairs && pairs[0]) || null
+        if (!active) return "You're a translator."
+        const sourceLang = active.reversed ? active.target.name : active.source.name
+        const targetLang = active.reversed ? active.source.name : active.target.name
         return `You're a translator and translate from ${sourceLang} to ${targetLang}. When the prompt is a word or half sentence, translate it and give an example how to use it in a full sentence. When the prompt is a full sentence or sentences, translate it.`
     }
 
@@ -141,6 +207,8 @@ function App() {
                             <LanguagePairSelector
                                 selectedPair={selectedPair}
                                 onPairSelect={handlePairSelect}
+                                pairs={pairs}
+                                onRemovePair={handleRemovePair}
                             />
                         }
                     />

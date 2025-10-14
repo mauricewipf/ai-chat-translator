@@ -1,14 +1,13 @@
 import { LanaguageEditSheet } from '@/components/LanaguageEditSheet'
 import { Button } from '@/components/ui/button'
-import { languagePairs } from '@/data/languagePairs'
 import { cn } from '@/lib/utils'
 import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react'
 
-export function LanguagePairSelector({ selectedPair, onPairSelect }) {
+export function LanguagePairSelector({ selectedPair, onPairSelect, pairs, onRemovePair }) {
     return (
         <div className="w-full overflow-x-auto">
             <div className="flex gap-3 min-w-max px-2 items-center">
-                {languagePairs.map((pair) => {
+                {(pairs || []).map((pair) => {
                     const isSelected = selectedPair?.id === pair.id
                     const isReversed = selectedPair?.id === pair.id && selectedPair?.reversed
 
@@ -40,7 +39,7 @@ export function LanguagePairSelector({ selectedPair, onPairSelect }) {
                         </Button>
                     )
                 })}
-                <LanaguageEditSheet>
+                <LanaguageEditSheet pairs={pairs} onRemovePair={onRemovePair}>
                     <Button variant="outline">
                         <Pencil className="w-4 h-4" />
                         Edit

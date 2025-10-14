@@ -1,7 +1,8 @@
+import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { languagePairs } from '@/data/languagePairs'
+import { ArrowLeftRight } from 'lucide-react'
 
-export function LanaguageEditSheet({ children }) {
+export function LanaguageEditSheet({ children, pairs, onRemovePair }) {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -13,16 +14,16 @@ export function LanaguageEditSheet({ children }) {
                 </SheetHeader>
 
                 <div className="mt-4 space-y-2">
-                    {languagePairs.map((pair) => (
+                    {pairs?.map((pair) => (
                         <div key={pair.id} className="flex items-center justify-between rounded-md border p-3">
                             <div className="flex items-center gap-3">
                                 <span className="text-xl" role="img" aria-label={pair.source.name}>{pair.source.flag}</span>
-                                <span className="text-muted-foreground">→</span>
+                                <span className="text-sm">{pair.source.name}</span>
+                                <ArrowLeftRight className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
                                 <span className="text-xl" role="img" aria-label={pair.target.name}>{pair.target.flag}</span>
+                                <span className="text-sm">{pair.target.name}</span>
                             </div>
-                            <div className="text-sm text-muted-foreground">
-                                {pair.source.name} to {pair.target.name}
-                            </div>
+                            <Button variant="destructive" size="sm" onClick={() => onRemovePair?.(pair.id)}>Remove</Button>
                         </div>
                     ))}
                 </div>
