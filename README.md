@@ -133,7 +133,7 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
 
 ## Deploy on Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmauricewipf%2Fai-chat-translator&project-name=ai-chat-translator&repository-name=ai-chat-translator)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmauricewipf%2Fai-chat-translator&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20Secret%20Key&envLink=https%3A%2F%2Fgithub.com%2Fmauricewipf%2Fai-chat-translator%2Fblob%2Fmaster%2FREADME.md%23docker-deployment&project-name=ai-chat-translator&repository-name=ai-chat-translator)
 
 ## License
 
