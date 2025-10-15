@@ -20,21 +20,20 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Copy root package files (needed for workspace setup)
+COPY package*.json ./
+
 # Copy server package files
 COPY server/package*.json ./server/
 
-# Install production dependencies only
-WORKDIR /app/server
-RUN npm ci --only=production
+# Install production dependencies only (this installs workspace dependencies)
+RUN npm ci --omit=dev --workspace=server
 
 # Copy server source code
-COPY server/ ./
+COPY server/ ./server/
 
 # Copy built frontend from build stage
 COPY --from=build /app/dist /app/dist
-
-# Set working directory back to /app
-WORKDIR /app
 
 # Expose port (default 3001, can be overridden with PORT env var)
 EXPOSE 3001
