@@ -78,9 +78,9 @@ The built files will be in the `dist` directory and served by the Express server
          docker buildx build \
             --platform linux/amd64,linux/arm64 \
             -t mauricewipf/ai-chat-translator:latest \
-            -t mauricewipf/ai-chat-translator:0.1.1 \
+            -t mauricewipf/ai-chat-translator:0.2.1 \
             --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
-            --build-arg APP_VERSION=0.1.1 \
+            --build-arg APP_VERSION=0.2.1 \
             --push \
             --provenance=false \
             .
@@ -91,13 +91,19 @@ The built files will be in the `dist` directory and served by the Express server
 
 View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat-translator
 
-4. How to use the image
+4. How to use the image:
 
-         docker run \
-            --publish 3000:80 \
+         docker run -d --rm \
+            --publish 3001:3001 \
             --restart unless-stopped \
-            --env OPENAI_API_KEY=YOUR_SECRET_KEY_BASE \
-            mauricewipf/ai-chat-translator:latest
+            --env OPENAI_API_KEY=YOUR_OPENAI_API_KEY \
+            mauricewipf/ai-chat-translator:0.2.0
+
+5. Verify the container is running:
+
+         curl http://localhost:3001/api/health
+
+   You should see: `{"status":"ok"}`
 
 ## Docker Deployment
 
@@ -112,7 +118,13 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
    docker-compose up -d --build
    ```
 
-3. **Access the application:**
+3. **Verify the container is running:**
+   ```bash
+   curl http://localhost:3001/api/health
+   ```
+   You should see: `{"status":"ok"}`
+
+4. **Access the application:**
    Open your browser and navigate to `http://localhost:3001`
 
 ## Deploy on Vercel

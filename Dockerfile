@@ -3,34 +3,46 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files for frontend
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Install dependencies (ignore postinstall script since server folder doesn't exist yet)
+RUN npm ci --ignore-scripts
 
 # Copy source files
 COPY . .
 
-# Accept build argument for API key
-ARG OPENAI_API_KEY
-ENV OPENAI_API_KEY=${OPENAI_API_KEY}
-
-# Build the application with production environment
+# Build the frontend application
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM node:20-alpine
 
-# Copy built files from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy server package files
+COPY server/package*.json ./server/
 
-# Expose port
-EXPOSE 80
+# Install production dependencies only
+WORKDIR /app/server
+RUN npm ci --only=production
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Copy server source code
+COPY server/ ./
+
+# Copy built frontend from build stage
+COPY --from=build /app/dist /app/dist
+
+# Set working directory back to /app
+WORKDIR /app
+
+# Expose port (default 3001, can be overridden with PORT env var)
+EXPOSE 3001
+
+# Set environment variable defaults
+ENV NODE_ENV=production
+ENV PORT=3001
+
+# Start the server
+CMD ["node", "server/index.js"]
 

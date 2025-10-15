@@ -5,12 +5,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - OPENAI_API_KEY=${OPENAI_API_KEY}
     container_name: ai-chat-translator
     ports:
-      - "3000:80"
+      - "3001:3001"
     restart: unless-stopped
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PORT=3001
+    env_file:
+      - ./server/.env
     networks:
       - translator-network
 
