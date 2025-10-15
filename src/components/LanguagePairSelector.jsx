@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react'
 export function LanguagePairSelector({ selectedPair, onPairSelect, pairs, onRemovePair, onAddPair, languages }) {
     return (
         <div className="w-full overflow-x-auto">
-            <div className="flex gap-3 min-w-max px-2 items-center">
+            <div className="flex gap-3 min-w-max items-center">
                 {(pairs || []).map((pair) => {
                     const isSelected = selectedPair?.id === pair.id
                     const isReversed = selectedPair?.id === pair.id && selectedPair?.reversed

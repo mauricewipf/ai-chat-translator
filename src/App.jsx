@@ -10,7 +10,17 @@ function App() {
     const { messages, isLoading, sendMessage } = useChat(selectedPair)
 
     return (
-        <div className="h-dvh bg-gradient-to-br from-background to-secondary">
+        <div
+            className="bg-gradient-to-br from-background to-secondary"
+            style={{
+                height: '100dvh',
+                paddingTop: 'max(env(safe-area-inset-top), 0px)',
+                //paddingBottom: 'max(env(safe-area-inset-bottom), 0px)',
+                paddingLeft: 'env(safe-area-inset-left)',
+                paddingRight: 'env(safe-area-inset-right)',
+                boxSizing: 'border-box',
+            }}
+        >
             <div className="max-w-4xl mx-auto h-full flex flex-col">
                 <Card className="flex-1 flex flex-col overflow-hidden">
                     <ChatInterface

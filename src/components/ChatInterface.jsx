@@ -75,7 +75,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
             )}
 
             {/* Input Area */}
-            <div className="p-4">
+            <div className="pb-5 px-3">
                 <form onSubmit={handleSubmit} className="flex gap-2">
                     <AutoResizeTextarea
                         value={input}
