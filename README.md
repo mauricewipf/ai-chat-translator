@@ -77,6 +77,10 @@ The built files will be in the `dist` directory and served by the Express server
          # Use BuildKit for multi-arch builds
          docker buildx create --use
 
+
+         # Helper command: Get all existing tags fo image
+         curl -s "https://hub.docker.com/v2/repositories/mauricewipf/ai-chat-translator/tags/?page_size=100" | jq -r '.results[].name'
+
          docker buildx build \
             --platform linux/amd64,linux/arm64 \
             -t mauricewipf/ai-chat-translator:latest \
