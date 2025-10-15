@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
-        "dev": "node --watch index.js"
+        "dev": "node --watch index.js",
+        "kill-3001": "kill -9 $(lsof -ti:3001)"
     },
     "dependencies": {
         "cors": "^2.8.5",
