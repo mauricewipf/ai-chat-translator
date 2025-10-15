@@ -1,20 +1,13 @@
-import { ApiKeyForm } from '@/components/ApiKeyForm'
 import { ChatInterface } from '@/components/ChatInterface'
 import { LanguagePairSelector } from '@/components/LanguagePairSelector'
 import { Card } from '@/components/ui/card'
-import { useApiKey } from '@/hooks/useApiKey'
 import { useChat } from '@/hooks/useChat'
 import { useLanguagePairs } from '@/hooks/useLanguagePairs'
 import { languages } from '@/lib/languages'
 
 function App() {
-    const { apiKey, saveApiKey } = useApiKey()
     const { pairs, selectedPair, onPairSelect, onRemovePair, onAddPair } = useLanguagePairs(languages)
-    const { messages, isLoading, sendMessage } = useChat(apiKey, selectedPair)
-
-    if (!apiKey) {
-        return <ApiKeyForm onSubmit={saveApiKey} />
-    }
+    const { messages, isLoading, sendMessage } = useChat(selectedPair)
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-background to-secondary">

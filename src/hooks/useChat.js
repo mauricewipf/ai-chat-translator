@@ -1,7 +1,10 @@
-import OpenAI from 'openai'
 import { useState } from 'react'
 
-export function useChat(apiKey, selectedPair) {
+// Use relative path for API calls (works with same server)
+// Can be overridden with VITE_API_URL env var for different setups
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
+
+export function useChat(selectedPair) {
     const [messages, setMessages] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
@@ -14,35 +17,37 @@ export function useChat(apiKey, selectedPair) {
     }
 
     const sendMessage = async (userMessage) => {
-        if (!apiKey) {
-            setMessages((prev) => [
-                ...prev,
-                { role: 'user', content: userMessage },
-                { role: 'assistant', content: 'Error: OpenAI API key not configured. Please set OPENAI_API_KEY in your .env file.' }
-            ])
-            return
-        }
-
-        const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true })
-
         const newMessages = [...messages, { role: 'user', content: userMessage }]
         setMessages(newMessages)
         setIsLoading(true)
 
         try {
-            const response = await openai.chat.completions.create({
-                model: 'gpt-4',
-                messages: [
-                    { role: 'system', content: getSystemPrompt() },
-                    ...newMessages
-                ],
+            const response = await fetch(`${API_BASE_URL}/api/chat/completions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [
+                        { role: 'system', content: getSystemPrompt() },
+                        ...newMessages
+                    ],
+                }),
             })
-            const assistantMessage = response.choices[0].message.content
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error || 'Failed to get translation')
+            }
+
+            const data = await response.json()
+            const assistantMessage = data.choices[0].message.content
             setMessages([...newMessages, { role: 'assistant', content: assistantMessage }])
         } catch (error) {
             setMessages((prev) => [...prev, {
                 role: 'assistant',
-                content: `Error: ${error.message || 'Failed to get translation. Please check your API key and try again.'}`
+                content: `Error: ${error.message || 'Failed to get translation. Please check the server configuration.'}`
             }])
         } finally {
             setIsLoading(false)

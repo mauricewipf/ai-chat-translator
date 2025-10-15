@@ -63,10 +63,16 @@ export default defineConfig(({ mode }) => {
         server: {
             host: '0.0.0.0',
             port: 3000,
+            proxy: {
+                '/api': {
+                    target: 'http://localhost:3001',
+                    changeOrigin: true,
+                }
+            }
         },
         // Expose specific env variables to the client
         define: {
-            'import.meta.env.OPENAI_API_KEY': JSON.stringify(env.OPENAI_API_KEY),
+            'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL),
         },
     }
 })

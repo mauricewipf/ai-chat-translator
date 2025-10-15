@@ -12,6 +12,7 @@ An AI-powered chat application for language translation built with React, shadcn
 - 🎨 Modern UI with shadcn/ui components
 - 📱 Progressive Web App (PWA)
 - 🐳 Docker support for easy deployment
+- 🔒 Secure server-side API key management
 
 ## Prerequisites
 
@@ -21,13 +22,6 @@ An AI-powered chat application for language translation built with React, shadcn
 
 ## Setup
 
-There are two ways to use your **OPENAI_API_KEY**:
-
-- Use a .env file or
-- Enter the key in the browser (stored on local storage)
-
-![AI Chat Translator UI](assets/ui-desktop-01.png)
-
 ### Local Development
 
 1. **Install dependencies:**
@@ -35,24 +29,26 @@ There are two ways to use your **OPENAI_API_KEY**:
    npm install
    ```
 
-2. **Configure environment variables:**
-   Copy the example environment file and add your OpenAI API key:
+2. **Configure your OpenAI API key:**
+   Create a `.env` file in the `server` directory:
    ```bash
-   cp .env.example .env
-   ```
-   
-   Then edit `.env`:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
+   cd server
+   echo "OPENAI_API_KEY=your_openai_api_key_here" > .env
    ```
 
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
+3. **Start the application:**
 
-4. **Access the application:**
-   Open your browser and navigate to `http://localhost:3000`
+   **For production-like environment (unified server):**
+   ```bash
+   npm start
+   ```
+   Access at `http://localhost:3001`
+
+   **For development with hot-reload:**
+   ```bash
+   npm run dev:all
+   ```
+   Access at `http://localhost:3000`
 
 ### Building for Production
 
@@ -66,7 +62,7 @@ npm run build
 npm run build:local
 ```
 
-The built files will be in the `dist` directory.
+The built files will be in the `dist` directory and served by the Express server.
 
 ## Publishing to Docker Hub
 
@@ -106,7 +102,7 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
 ## Docker Deployment
 
 1. **Set your OpenAI API key:**
-   Create a `.env` file in the root directory:
+   Create a `.env` file in the `server` directory:
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
    ```
@@ -117,7 +113,7 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
    ```
 
 3. **Access the application:**
-   Open your browser and navigate to `http://localhost:3000`
+   Open your browser and navigate to `http://localhost:3001`
 
 ## Deploy on Vercel
 
