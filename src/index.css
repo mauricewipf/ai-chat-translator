@@ -67,4 +67,12 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    /* Fix for mobile overflow */
+    html,
+    body,
+    #root {
+        height: 100%;
+        overflow: hidden;
+    }
 }
