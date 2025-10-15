@@ -3,18 +3,20 @@
     "private": true,
     "version": "0.1.0",
     "type": "module",
+    "workspaces": [
+        "server"
+    ],
     "scripts": {
         "dev": "vite --mode development",
-        "dev:server": "cd server && npm run dev",
+        "dev:server": "npm run dev --workspace=server",
         "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\"",
         "build": "vite build --mode production",
         "build:local": "vite build --mode development",
         "preview": "vite preview",
-        "start": "npm run build && cd server && npm start",
-        "start:dev": "npm run build:local && cd server && npm start",
-        "server": "cd server && npm start",
-        "lint": "eslint .",
-        "postinstall": "cd server && npm install"
+        "start": "npm run build && npm run start --workspace=server",
+        "start:dev": "npm run build:local && npm run start --workspace=server",
+        "server": "npm run start --workspace=server",
+        "lint": "eslint ."
     },
     "dependencies": {
         "@radix-ui/react-dialog": "^1.1.15",

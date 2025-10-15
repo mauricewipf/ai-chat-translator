@@ -24,16 +24,18 @@ An AI-powered chat application for language translation built with React, shadcn
 
 ### Local Development
 
+This project uses npm workspaces for better dependency management.
+
 1. **Install dependencies:**
    ```bash
    npm install
    ```
+   This will install dependencies for both the frontend and server in one command.
 
 2. **Configure your OpenAI API key:**
    Create a `.env` file in the `server` directory:
    ```bash
-   cd server
-   echo "OPENAI_API_KEY=your_openai_api_key_here" > .env
+   echo "OPENAI_API_KEY=your_openai_api_key_here" > server/.env
    ```
 
 3. **Start the application:**
