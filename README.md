@@ -99,7 +99,7 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
 
 4. How to use the image:
 
-         docker run -d --rm \
+         docker run -d \
             --publish 3001:3001 \
             --restart unless-stopped \
             --env OPENAI_API_KEY=YOUR_OPENAI_API_KEY \
