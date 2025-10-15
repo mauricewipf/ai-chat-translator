@@ -108,10 +108,12 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
 ## Docker Deployment
 
 1. **Set your OpenAI API key:**
-   Create a `.env` file in the `server` directory:
+   Create a `.env` file in the root directory:
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
    ```
+
+   Or replace "INSERT_DEFAULT_API_KEY_HERE" in docker-compose.yml with your OpenAI API key.
 
 2. **Build and run with Docker Compose:**
    ```bash
