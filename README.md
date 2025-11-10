@@ -2,8 +2,6 @@
 
 An AI-powered chat application for language translation built with React, shadcn/ui, and OpenAI API.
 
-> https://ai-chat-translator.vercel.app/
-
 ## Features
 
 - 🌍 Translate word and sentences. Get exmaples on how to use a word
@@ -85,8 +83,8 @@ The built files will be in the `dist` directory and served by the Express server
             --platform linux/amd64,linux/arm64 \
             -t mauricewipf/ai-chat-translator:latest \
             -t mauricewipf/ai-chat-translator:0.2.1 \
-            --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
             --build-arg APP_VERSION=0.2.1 \
+            --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
             --push \
             --provenance=false \
             .
