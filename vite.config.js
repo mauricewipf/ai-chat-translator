@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
             react(),
             VitePWA({
                 registerType: 'autoUpdate',
-                includeAssets: ['icon-favicon.png'],
+                includeAssets: ['icon-favicon-32x32.png', 'icon-favicon-16x16.png'],
                 manifest: {
                     name: 'AI Chat Translator',
                     short_name: 'AI Translator',
