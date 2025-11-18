@@ -1,11 +1,12 @@
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
+import { DropdownMenuDialog } from '@/components/DropdownMenuDialog'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { Loader2, Send } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-export function ChatInterface({ messages, onSendMessage, isLoading, languageSelector }) {
+export function ChatInterface({ messages, onSendMessage, isLoading, languageSelector, isSidebarOpen, onToggleSidebar }) {
     const [input, setInput] = useState('')
     const scrollRef = useRef(null)
 
@@ -25,6 +26,31 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
 
     return (
         <div className="flex flex-col h-full">
+            {/* Header with sidebar toggle */}
+            <div className="p-3 border-b flex items-center">
+                <button
+                    onClick={onToggleSidebar}
+                    className="p-2 hover:bg-accent rounded-lg transition-colors"
+                    aria-label="Toggle sidebar"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
             {/* Messages Area */}
             <ScrollArea ref={scrollRef} className="flex-1 p-4 space-y-4">
                 {messages.length === 0 ? (
@@ -40,7 +66,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
                             <div
                                 key={index}
                                 className={cn(
-                                    "flex",
+                                    "flex items-start gap-2",
                                     message.role === 'user' ? 'justify-end' : 'justify-start'
                                 )}
                             >
@@ -54,6 +80,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
                                 >
                                     <p className="whitespace-pre-wrap">{message.content}</p>
                                 </div>
+                                <DropdownMenuDialog />
                             </div>
                         ))}
                     </div>
