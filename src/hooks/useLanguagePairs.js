@@ -2,7 +2,36 @@ import { useEffect, useMemo, useState } from 'react'
 
 const PAIRS_KEY = 'language_pair_ids'
 const SELECTED_KEY = 'selected_language_pair_id'
-const DEFAULT_PAIR_IDS = ['de-en', 'de-es', 'en-es', 'en-hu']
+const API_URL = import.meta.env.VITE_API_URL || ''
+
+// Helper function to fetch language pairs from backend
+async function fetchLanguagePairs() {
+    try {
+        const response = await fetch(`${API_URL}/api/language-pairs`)
+        if (response.ok) {
+            const data = await response.json()
+            return data.pairIds
+        }
+    } catch (error) {
+        console.error('Failed to fetch language pairs from backend:', error)
+    }
+    return null
+}
+
+// Helper function to save language pairs to backend
+async function saveLanguagePairs(pairIds) {
+    try {
+        const response = await fetch(`${API_URL}/api/language-pairs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pairIds })
+        })
+        return response.ok
+    } catch (error) {
+        console.error('Failed to save language pairs to backend:', error)
+        return false
+    }
+}
 
 export function useLanguagePairs(languages) {
     const [pairIds, setPairIds] = useState(() => {
@@ -10,8 +39,10 @@ export function useLanguagePairs(languages) {
             const stored = localStorage.getItem(PAIRS_KEY)
             if (stored) return JSON.parse(stored)
         } catch (_) { }
-        return DEFAULT_PAIR_IDS
+        return []
     })
+
+    const [isLoading, setIsLoading] = useState(true)
 
     const pairs = useMemo(() => {
         return (pairIds || [])
@@ -28,7 +59,7 @@ export function useLanguagePairs(languages) {
     const [selectedPair, setSelectedPair] = useState(() => {
         try {
             const storedIds = localStorage.getItem(PAIRS_KEY)
-            const ids = storedIds ? JSON.parse(storedIds) : DEFAULT_PAIR_IDS
+            const ids = storedIds ? JSON.parse(storedIds) : []
             const storedId = localStorage.getItem(SELECTED_KEY)
             const effectiveId = storedId && ids.includes(storedId) ? storedId : (ids[0] || null)
             if (!effectiveId) return null
@@ -37,16 +68,30 @@ export function useLanguagePairs(languages) {
             const target = languages[tgt]
             return source && target ? { id: effectiveId, source, target, reversed: false } : null
         } catch (_) {
-            const [src, tgt] = (DEFAULT_PAIR_IDS[0] || 'de-en').split('-')
-            const source = languages[src]
-            const target = languages[tgt]
-            return source && target ? { id: `${src}-${tgt}`, source, target, reversed: false } : null
+            return null
         }
     })
 
+    // Fetch language pairs from backend on mount
     useEffect(() => {
-        try { localStorage.setItem(PAIRS_KEY, JSON.stringify(pairIds)) } catch (_) { }
-    }, [pairIds])
+        async function loadPairs() {
+            const fetchedPairs = await fetchLanguagePairs()
+            if (fetchedPairs) {
+                setPairIds(fetchedPairs)
+                try { localStorage.setItem(PAIRS_KEY, JSON.stringify(fetchedPairs)) } catch (_) { }
+            }
+            setIsLoading(false)
+        }
+        loadPairs()
+    }, [])
+
+    // Save to both localStorage and backend when pairIds change
+    useEffect(() => {
+        if (!isLoading) {
+            try { localStorage.setItem(PAIRS_KEY, JSON.stringify(pairIds)) } catch (_) { }
+            saveLanguagePairs(pairIds)
+        }
+    }, [pairIds, isLoading])
 
     const onPairSelect = (pair) => {
         if (!pair) return
@@ -76,7 +121,6 @@ export function useLanguagePairs(languages) {
                 }
                 return prevSel
             })
-            try { localStorage.setItem(PAIRS_KEY, JSON.stringify(next)) } catch (_) { }
             return next
         })
     }
@@ -90,9 +134,7 @@ export function useLanguagePairs(languages) {
         const reversedId = `${tgt}-${src}`
         setPairIds((prev) => {
             if (prev.includes(id) || prev.includes(reversedId)) return prev
-            const next = [id, ...prev]
-            try { localStorage.setItem(PAIRS_KEY, JSON.stringify(next)) } catch (_) { }
-            return next
+            return [id, ...prev]
         })
     }
 

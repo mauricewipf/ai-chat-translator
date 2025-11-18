@@ -1,4 +1,21 @@
 services:
+  redis:
+    image: redis:7-alpine
+    container_name: ai-chat-translator-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - translator-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   ai-chat-translator:
     build:
       context: .
@@ -10,8 +27,16 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-INSERT_DEFAULT_API_KEY_HERE}
       - PORT=3001
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
     networks:
       - translator-network
+
+volumes:
+  redis-data:
+
 
 networks:
   translator-network:

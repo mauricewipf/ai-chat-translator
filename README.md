@@ -11,11 +11,13 @@ An AI-powered chat application for language translation built with React, shadcn
 - 📱 Progressive Web App (PWA)
 - 🐳 Docker support for easy deployment
 - 🔒 Secure server-side API key management
+- 💾 Redis-backed data persistence for language pairs
 
 ## Prerequisites
 
 - Node.js 18+ and npm
 - OpenAI API key
+- Redis (for data persistence)
 - Docker and Docker Compose (for containerized deployment)
 
 ## Setup
@@ -36,7 +38,12 @@ This project uses npm workspaces for better dependency management.
    echo "OPENAI_API_KEY=your_openai_api_key_here" > server/.env
    ```
 
-3. **Start the application:**
+3. **Start Redis for local development:**
+   ```bash
+   npm run dev:redis
+   ```
+
+4. **Start the application:**
 
    **For production-like environment (unified server):**
    ```bash
@@ -111,6 +118,8 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
 
 ## Docker Deployment
 
+Docker Compose will automatically start both the application and Redis with persistence enabled.
+
 1. **Set your OpenAI API key:**
    Create a `.env` file in the root directory:
    ```env
@@ -123,15 +132,41 @@ View on Docker Hub: https://hub.docker.com/repository/docker/mauricewipf/ai-chat
    ```bash
    docker-compose up -d --build
    ```
+   This will start:
+   - Redis container with persistent storage (port 6379)
+   - AI Chat Translator application (port 3001)
 
-3. **Verify the container is running:**
+3. **Verify the services are running:**
    ```bash
+   # Check application health
    curl http://localhost:3001/api/health
+   # Should see: {"status":"ok"}
+   
+   # Check Redis
+   docker exec ai-chat-translator-redis redis-cli ping
+   # Should see: PONG
    ```
-   You should see: `{"status":"ok"}`
 
 4. **Access the application:**
    Open your browser and navigate to `http://localhost:3001`
+
+5. **View logs:**
+   ```bash
+   # View all logs
+   docker-compose logs -f
+   
+   # View specific service logs
+   docker-compose logs -f ai-chat-translator
+   docker-compose logs -f redis
+   ```
+
+6. **Stop the services:**
+   ```bash
+   docker-compose down
+   
+   # To also remove the Redis data volume
+   docker-compose down -v
+   ```
 
 ## Deploy on Vercel
 
