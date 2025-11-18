@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@/components/theme-provider'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { registerSW } from 'virtual:pwa-register'
@@ -16,7 +17,9 @@ const updateSW = registerSW({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <App />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <App />
+        </ThemeProvider>
     </React.StrictMode>,
 )
 

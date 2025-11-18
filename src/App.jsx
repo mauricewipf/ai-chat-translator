@@ -14,7 +14,7 @@ function App() {
     return (
         <SidebarProvider defaultOpen={false}>
             <div
-                className="bg-gradient-to-br from-background to-secondary"
+                className="bg-gradient-to-br from-background to-secondary w-full"
                 style={{
                     height: '100dvh',
                     paddingTop: 'max(env(safe-area-inset-top), 0px)',
@@ -24,12 +24,12 @@ function App() {
                     boxSizing: 'border-box',
                 }}
             >
-                <div className="h-full flex md:gap-4 md:p-4 relative">
+                <div className="h-full w-full flex md:gap-4 md:p-4 relative">
                     {/* Sidebar */}
                     <Sidebar />
 
                     {/* Main Content */}
-                    <SidebarInset className="flex-1 flex flex-col">
+                    <SidebarInset className="flex-1 flex flex-col w-full">
                         <Card className="flex-1 flex flex-col overflow-hidden md:rounded-lg rounded-none">
                             <ChatInterface
                                 messages={messages}
