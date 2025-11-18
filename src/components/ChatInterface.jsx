@@ -2,11 +2,12 @@ import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
 import { DropdownMenuDialog } from '@/components/DropdownMenuDialog'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 import { cn } from '@/lib/utils'
 import { Loader2, Send } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-export function ChatInterface({ messages, onSendMessage, isLoading, languageSelector, isSidebarOpen, onToggleSidebar }) {
+export function ChatInterface({ messages, onSendMessage, isLoading, languageSelector }) {
     const [input, setInput] = useState('')
     const scrollRef = useRef(null)
 
@@ -28,27 +29,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
         <div className="flex flex-col h-full">
             {/* Header with sidebar toggle */}
             <div className="p-3 border-b flex items-center">
-                <button
-                    onClick={onToggleSidebar}
-                    className="p-2 hover:bg-accent rounded-lg transition-colors"
-                    aria-label="Toggle sidebar"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
-                        <line x1="3" y1="12" x2="21" y2="12" />
-                        <line x1="3" y1="6" x2="21" y2="6" />
-                        <line x1="3" y1="18" x2="21" y2="18" />
-                    </svg>
-                </button>
+                <SidebarTrigger />
             </div>
 
             {/* Messages Area */}
