@@ -13,7 +13,7 @@ export function useChat(selectedPair) {
         if (!active) return "You're a translator."
         const sourceLang = active.reversed ? active.target.name : active.source.name
         const targetLang = active.reversed ? active.source.name : active.target.name
-        return `You're a translator and translate from ${sourceLang} to ${targetLang}. When the prompt is a word or half sentence, translate it and give an example how to use it in a full sentence. When the prompt is a full sentence or sentences, translate it.`
+        return `You're a translator and translate from ${sourceLang} to ${targetLang}. When the prompt is a word, translate it and give an example how to use it in a full sentence. Give the example in both the source and target language. When the prompt is a full sentence or sentences, translate it and don't give an example.`
     }
 
     const sendMessage = async (userMessage) => {
