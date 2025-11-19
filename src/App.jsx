@@ -1,7 +1,6 @@
 import { ChatInterface } from '@/components/ChatInterface'
 import { LanguagePairSelector } from '@/components/LanguagePairSelector'
 import { Sidebar } from '@/components/Sidebar'
-import { Card } from '@/components/ui/card'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { useChat } from '@/hooks/useChat'
 import { useLanguagePairs } from '@/hooks/useLanguagePairs'
@@ -24,29 +23,27 @@ function App() {
                     boxSizing: 'border-box',
                 }}
             >
-                <div className="h-full w-full flex md:gap-4 md:p-4 relative">
+                <div className="h-full w-full flex relative">
                     {/* Sidebar */}
                     <Sidebar />
 
                     {/* Main Content */}
-                    <SidebarInset className="flex-1 flex flex-col w-full">
-                        <Card className="flex-1 flex flex-col overflow-hidden md:rounded-lg rounded-none">
-                            <ChatInterface
-                                messages={messages}
-                                onSendMessage={sendMessage}
-                                isLoading={isLoading}
-                                languageSelector={
-                                    <LanguagePairSelector
-                                        selectedPair={selectedPair}
-                                        onPairSelect={onPairSelect}
-                                        pairs={pairs}
-                                        onRemovePair={onRemovePair}
-                                        onAddPair={onAddPair}
-                                        languages={languages}
-                                    />
-                                }
-                            />
-                        </Card>
+                    <SidebarInset className="flex-1 flex flex-col w-full overflow-hidden">
+                        <ChatInterface
+                            messages={messages}
+                            onSendMessage={sendMessage}
+                            isLoading={isLoading}
+                            languageSelector={
+                                <LanguagePairSelector
+                                    selectedPair={selectedPair}
+                                    onPairSelect={onPairSelect}
+                                    pairs={pairs}
+                                    onRemovePair={onRemovePair}
+                                    onAddPair={onAddPair}
+                                    languages={languages}
+                                />
+                            }
+                        />
                     </SidebarInset>
                 </div>
             </div>
