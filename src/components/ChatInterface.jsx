@@ -26,14 +26,13 @@ export function ChatInterface({ messages, onSendMessage, isLoading, languageSele
     }
 
     return (
-        <div className="flex flex-col h-full">
-            {/* Header with sidebar toggle */}
-            <div className="p-3 border-b flex items-center">
+        <div className="flex flex-col h-full relative">
+            <div className="absolute top-3 left-3 z-10">
                 <SidebarTrigger />
             </div>
 
             {/* Messages Area */}
-            <ScrollArea ref={scrollRef} className="flex-1 p-4 space-y-4">
+            <ScrollArea ref={scrollRef} className="flex-1 p-4 pt-16 space-y-4">
                 {messages.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-center text-muted-foreground">
                         <p>Translate a word, text or sentence by typing below.<br /><br />
